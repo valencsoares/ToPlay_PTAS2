@@ -32,6 +32,12 @@ app.post("/usuarios/novo", async (req, res) => {
     res.send("Usuário inserido sob id " + usuario.id)
 });
 
+app.get("/usuarios/:id/atualizar", async (req, res) => {
+    const id = req.params.id;
+    const usuario = await Usuario.findByPk(id, {raw: true});
+    res.render(`formUsuario`, {usuario});
+})
+
 app.listen(8000, () => {
     console.log("Aplicação rodando!")
 })
