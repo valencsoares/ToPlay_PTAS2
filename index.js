@@ -18,6 +18,19 @@ app.get("/usuarios/novo", (req, res) => {
 app.get("/", (req, res) => {
     res.render(`home`)
 })
+app.get("/usuarios", async (req, res) => {
+    res.render(`usuarios`, {usuarios})
+})
+
+app.post("/usuarios/novo", async (req, res) => {
+    const dadosUsuario = {
+        nickname: req.body.nickname,
+        nome: req.body.nome,
+    };
+    const usuario = await Usuario.create(dadosUsuario)
+    res.send("Usuário inserido sob id " + usuario.id)
+});
+
 app.listen(8000, () => {
     console.log("Aplicação rodando!")
 })
