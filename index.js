@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
     res.render(`home`)
 })
 app.get("/usuarios", async (req, res) => {
+    const usuarios = await Usuario.findAll({raw: true});
     res.render(`usuarios`, {usuarios})
 })
 

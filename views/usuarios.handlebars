@@ -1,0 +1,20 @@
+<h1>Página de usuários</h1>
+
+<table border="1">
+    <tr>
+        <th>ID</th>
+        <th>Nickname</th>
+        <th>Nome</th>
+        <th></th>
+    </tr>
+    {{#each usuarios}}
+        <tr>
+            <td>{{this.id}}</td>
+            <td>{{this.nickname}}</td>
+            <td>{{this.nome}}</td>
+            <td>
+                <a href="/usuarios/{{this.id}}/atualizar">Atualizar</a>
+            </td>
+        </tr>
+    {{/each}}
+</table>
