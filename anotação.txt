@@ -1,0 +1,2 @@
+framework você precisa seguir a lógica dele para definir como as coisas funcionarão.
+uma biblioteca você decide como funcionará
