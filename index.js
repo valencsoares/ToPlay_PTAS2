@@ -54,6 +54,17 @@ app.post("/usuarios/:id/atualizar", async (req, res) => {
     }
 })
 
+app.post("/usuarios/excluir", async (req, res) => {
+    const id = req.body.id;
+    const registrosAfetados = await Usuario.destroy({where: {id: id}});
+
+    if (registrosAfetados > 0){
+        res.redirect("/usuarios");
+    } else {
+        res.send("Erro ao deletar usuário!")
+    }
+});
+
 app.listen(8000, () => {
     console.log("Aplicação rodando!")
 })
