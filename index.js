@@ -33,9 +33,25 @@ app.post("/usuarios/novo", async (req, res) => {
 });
 
 app.get("/usuarios/:id/atualizar", async (req, res) => {
-    const id = req.params.id;
+    const id = req.params.id; /* params pq é de um get */
     const usuario = await Usuario.findByPk(id, {raw: true});
     res.render(`formUsuario`, {usuario});
+})
+
+app.post("/usuarios/:id/atualizar", async (req, res) => {
+    const id = req.params.id;
+    const dadosUsuario = {
+        nickname: req.body.nickname,
+        nome: req.body.nome, /* body pq está pegando dentro de um post */
+    };
+
+    const registrosAfetados = await Usuario.update(dadosUsuario, {where: {id: id}}); /* se não houver o where, ele deleta todos */
+
+    if (registrosAfetados > 0){
+        res.redirect("/usuarios");
+    } else {
+        res.send("Erro ao atualizar usuário!")
+    }
 })
 
 app.listen(8000, () => {
