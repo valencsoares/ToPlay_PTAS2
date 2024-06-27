@@ -1,9 +1,16 @@
 require("dotenv").config();
 const conn = require("./db/conn");
 
-const Usuario = require("./models/Usuario.js")
 const handlebars = require("express-handlebars")
 const express = require("express")
+
+const Usuario = require("./models/Usuario.js")
+const Cartao = require("./models/Cartao");
+const Jogo = require("./models/Jogo");
+
+Jogo.belongsToMany(Usuario, { through: "conquistas" });
+Usuario.belongsToMany(Jogo, { through: "conquistas" });
+
 const app = express()
 
 app.engine("handlebars", handlebars.engine())
@@ -63,6 +70,43 @@ app.post("/usuarios/excluir", async (req, res) => {
     } else {
         res.send("Erro ao deletar usuário!")
     }
+});
+
+//Ver cartões do usuário
+app.get("/usuarios/:id/cartoes", async (req, res) => {
+    const id = parseInt(req.params.id);
+    const usuario = await Usuario.findByPk(id, { include: ["Cartaos"] }); //buscar o usuario e traz todos os cartoes associado a ele
+    
+    let cartoes = usuario.Cartaos;
+    cartoes = cartoes.map((cartao) => cartao.toJSON());
+
+    res.render("cartoes", { 
+        usuario: usuario.toJSON(), //converter p json
+        cartoes,
+     });
+});
+  
+//Formulário de cadastro de cartão
+app.get("/usuarios/:id/novoCartao", async (req, res) => {
+    const id = parseInt(req.params.id);
+  
+    res.render("formCartao", { id });
+});
+  
+//Cadastro de cartão
+app.post("/usuarios/:id/novoCartao", async (req, res) => {
+    const id = parseInt(req.params.id);
+  
+    const dadosCartao = {
+      numero: req.body.numero,
+      nome: req.body.nome,
+      cvv: req.body.cvv,
+      UsuarioId: id,
+    };
+  
+    await Cartao.create(dadosCartao);
+  
+    res.redirect(`/usuarios/${id}/cartoes`);
 });
 
 app.listen(8000, () => {
