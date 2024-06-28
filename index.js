@@ -8,8 +8,8 @@ const Usuario = require("./models/Usuario.js")
 const Cartao = require("./models/Cartao");
 const Jogo = require("./models/Jogo");
 
-Jogo.belongsToMany(Usuario, { through: "conquistas" });
-Usuario.belongsToMany(Jogo, { through: "conquistas" });
+Jogo.belongsToMany(Usuario, { through: "aquisicoes" });
+Usuario.belongsToMany(Jogo, { through: "aquisicoes" });
 
 const app = express()
 
@@ -109,6 +109,49 @@ app.post("/usuarios/:id/novoCartao", async (req, res) => {
     res.redirect(`/usuarios/${id}/cartoes`);
 });
 
+//jogos
+app.get("/jogos", async (req, res) => {
+    const jogos = await Jogo.findAll({raw: true});
+    res.render(`jogos`, {jogos})
+})
+
+app.get("/jogos/novo", (req, res) => {
+    res.render(`formJogo`)
+})
+
+app.post("/jogos/novo", async (req, res) => {
+    const dadosJogo = {
+        titulo: req.body.titulo,
+        descricao: req.body.descricao,
+        preco: req.body.preco,
+    };
+    const jogo = await Jogo.create(dadosJogo)
+    res.send("Jogo inserido sob id " + jogo.id)
+});
+
+app.get("/jogos/:id/atualizar", async (req, res) => {
+    const id = req.params.id;
+    const jogo = await Jogo.findByPk(id, {raw: true});
+    res.render(`formJogo`, {jogo});
+}) 
+
+app.post("/jogos/:id/atualizar", async (req, res) => {
+    const id = req.params.id;
+
+    const dadosJogo = {
+        titulo: req.body.titulo,
+        descricao: req.body.descricao,
+        preco: req.body.preco,
+    };
+
+    const registrosJogosAfetados = await Jogo.update(dadosJogo, {where: {id: id}}); 
+
+    if (registrosJogosAfetados > 0){
+        res.redirect("/jogos");
+    } else {
+        res.send("Erro ao atualizar o jogo!")
+    }
+}) 
 app.listen(8000, () => {
     console.log("Aplicação rodando!")
 })
