@@ -1,6 +1,8 @@
 <h1>Página de usuários</h1>
-
-<table border="1">
+<nav>
+    <a href="/usuarios/novo">Cadastrar um novo usuário</a>
+</nav>
+<table border="1" style="margin-top: 2%;">
     <tr>
         <th>ID</th>
         <th>Nickname</th>
@@ -8,18 +10,18 @@
         <th></th>
     </tr>
     {{#each usuarios}}
-        <tr>
-            <td>{{this.id}}</td>
-            <td>{{this.nickname}}</td>
-            <td>{{this.nome}}</td>
-            <td>
-                <a href="/usuarios/{{this.id}}/atualizar">Atualizar</a>
-                <form action="/usuarios/excluir" method="post">
-                    <input type="hidden" value="{{this.id}}" name="id">
-                    <input type="submit" value="excluir">
-                </form>
-                <a href="/usuarios/{{this.id}}/cartoes">Acessar cartões</a>
-            </td>
-        </tr>
+    <tr>
+        <td>{{this.id}}</td>
+        <td>{{this.nickname}}</td>
+        <td>{{this.nome}}</td>
+        <td>
+            <a href="/usuarios/{{this.id}}/atualizar">Atualizar</a>
+            <form action="/usuarios/excluir" method="post">
+                <input type="hidden" value="{{this.id}}" name="id">
+                <input type="submit" value="excluir">
+            </form>
+            <a href="/usuarios/{{this.id}}/cartoes">Acessar cartões</a>
+        </td>
+    </tr>
     {{/each}}
 </table>
