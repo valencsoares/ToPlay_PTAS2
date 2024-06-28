@@ -152,6 +152,18 @@ app.post("/jogos/:id/atualizar", async (req, res) => {
         res.send("Erro ao atualizar o jogo!")
     }
 }) 
+app.post("/jogos/excluir", async (req, res) => {
+    const id = req.body.id;
+    const registrosJogosAfetados = await Jogo.destroy({where: {id: id}});
+
+    if (registrosJogosAfetados > 0){
+        res.redirect("/jogos");
+    } else {
+        res.send("Erro ao deletar usuário!")
+    }
+});
+
+
 app.listen(8000, () => {
     console.log("Aplicação rodando!")
 })
