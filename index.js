@@ -89,8 +89,9 @@ app.get("/usuarios/:id/cartoes", async (req, res) => {
 //Formulário de cadastro de cartão
 app.get("/usuarios/:id/novoCartao", async (req, res) => {
     const id = parseInt(req.params.id);
+    const usuario = await Usuario.findByPk(id, {raw: true});
   
-    res.render("formCartao", { id });
+    res.render("formCartao", { id, usuario });
 });
   
 //Cadastro de cartão
