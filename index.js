@@ -7,6 +7,7 @@ const express = require("express")
 const Usuario = require("./models/Usuario.js")
 const Cartao = require("./models/Cartao");
 const Jogo = require("./models/Jogo");
+const Conquista = require("./models/Conquista");
 const Aquisicao = require("./models/Aquisicao");
 
 const app = express()
