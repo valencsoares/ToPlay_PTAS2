@@ -163,6 +163,39 @@ app.post("/jogos/excluir", async (req, res) => {
     }
 });
 
+//Conquistas
+app.get("/jogos/:id/conquistas", async (req, res) => {
+    const id = parseInt(req.params.id);
+    const jogo = await Jogo.findByPk(id, { include: ["Conquistas"] });
+    
+    let conquistas = jogo.Conquistas;
+    conquistas = conquistas.map((conquista) => conquista.toJSON());
+
+    res.render("conquistas", { 
+        jogo: jogo.toJSON(), 
+        conquistas,
+     });
+});
+  
+app.get("/jogos/:id/novaConquista", async (req, res) => {
+    const id = parseInt(req.params.id);
+  
+    res.render("formConquistas", { id });
+});
+  
+app.post("/jogos/:id/novaConquista", async (req, res) => {
+    const id = parseInt(req.params.id);
+  
+    const dadosConquista = {
+      titulo: req.body.titulo,
+      descricao: req.body.descricao,
+      JogoId: id,
+    };
+  
+    await Conquista.create(dadosConquista);
+  
+    res.redirect(`/jogos/${id}/conquistas`);
+});
 
 app.listen(8000, () => {
     console.log("Aplicação rodando!")
