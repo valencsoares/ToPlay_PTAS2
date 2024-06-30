@@ -7,9 +7,7 @@ const express = require("express")
 const Usuario = require("./models/Usuario.js")
 const Cartao = require("./models/Cartao");
 const Jogo = require("./models/Jogo");
-
-Jogo.belongsToMany(Usuario, { through: "aquisicoes" });
-Usuario.belongsToMany(Jogo, { through: "aquisicoes" });
+const Aquisicao = require("./models/Aquisicao");
 
 const app = express()
 
